@@ -14,7 +14,7 @@ SELECT first_name,
 last_name,
 hire_date
 FROM employees
-WHERE hire_date <= 1986;
+WHERE hire_date LIKE '1986%';
 
 -- Query 3
 SELECT 	departments.dept_no,
@@ -31,16 +31,16 @@ departments.dept_no = dept_manager.dept_no
 
 
 
--- Query 4 (NEED TO CHANGE ALL DEPT_MANAGER TO DEPT_EMP ONCE THE ERD IS CORRECTED)
+-- Query 4
 SELECT departments.dept_name,
-dept_manager.emp_no,
+dept_emp.emp_no,
 employees.last_name,
 employees.first_name
-FROM dept_manager
+FROM dept_emp
 INNER JOIN departments ON
-departments.dept_no = dept_manager.dept_no 
+departments.dept_no = dept_emp.dept_no 
 	INNER JOIN employees ON
-	employees.emp_no = dept_manager.emp_no ;
+	employees.emp_no = dept_emp.emp_no ;
 
 -- Query 5
 SELECT first_name,
@@ -49,16 +49,14 @@ sex
 FROM employees
 WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 
--- Query 6 (need to adjust ERD to include a FK for table dept_emp)
+-- Query 6
 SELECT employees.emp_no,
 employees.last_name,
-employees.first_name,
-departments.dept_name
-FROM employees,
-departments
+employees.first_name
+FROM employees
 WHERE emp_no IN(
 				SELECT emp_no
-				FROM dept_manager
+				FROM dept_emp
 				WHERE dept_no IN(
 									SELECT dept_no
 									FROM departments
@@ -76,7 +74,7 @@ FROM employees,
 departments
 WHERE emp_no IN(
 				SELECT emp_no
-				FROM dept_manager
+				FROM dept_emp
 				WHERE dept_no IN(
 									SELECT dept_no
 									FROM departments
