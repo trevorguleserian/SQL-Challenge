@@ -1,4 +1,4 @@
--- Query 1
+-- Query 1 (done)
 SELECT 	employees.emp_no, 
 employees.last_name,
 employees.first_name,
@@ -19,24 +19,28 @@ WHERE hire_date <= 1986;
 -- Query 3
 SELECT 	departments.dept_no,
 departments.dept_name,
-dept_manager.emp_no
+dept_manager.emp_no,
+employees.last_name,
+employees.first_name
 FROM dept_manager
 INNER JOIN departments ON
 departments.dept_no = dept_manager.dept_no 
-
-SELECT employees.last_name,
-employees.first_name
-FROM employees
-INNER JOIN dept_manager ON
-employees.emp_no = dept_manager.emp_no ;
+	INNER JOIN employees ON
+	employees.emp_no = dept_manager.emp_no ;
 
 
--- Query 4
-SELECT employees.emp_no,
-employees.first_name
+
+
+-- Query 4 (NEED TO CHANGE ALL DEPT_MANAGER TO DEPT_EMP ONCE THE ERD IS CORRECTED)
+SELECT departments.dept_name,
+dept_manager.emp_no,
 employees.last_name,
-FROM employees
-WHERE 
+employees.first_name
+FROM dept_manager
+INNER JOIN departments ON
+departments.dept_no = dept_manager.dept_no 
+	INNER JOIN employees ON
+	employees.emp_no = dept_manager.emp_no ;
 
 -- Query 5
 SELECT first_name,
@@ -45,20 +49,48 @@ sex
 FROM employees
 WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 
--- Query 6
-SELECT 
-FROM 
-WHERE
+-- Query 6 (need to adjust ERD to include a FK for table dept_emp)
+SELECT employees.emp_no,
+employees.last_name,
+employees.first_name,
+departments.dept_name
+FROM employees,
+departments
+WHERE emp_no IN(
+				SELECT emp_no
+				FROM dept_manager
+				WHERE dept_no IN(
+									SELECT dept_no
+									FROM departments
+									WHERE dept_name = 'Sales'
+				
+				)
+			) ;
 
 -- Query 7
-SELECT 
-FROM 
-WHERE
+SELECT employees.emp_no,
+employees.last_name,
+employees.first_name,
+departments.dept_name
+FROM employees,
+departments
+WHERE emp_no IN(
+				SELECT emp_no
+				FROM dept_manager
+				WHERE dept_no IN(
+									SELECT dept_no
+									FROM departments
+									WHERE dept_name IN ('Sales','Development')
+				
+				)
+			) ;
 
 -- Query 8
-SELECT 
-FROM 
-WHERE
+SELECT last_name "Last Name",
+COUNT(last_name) "Last Name Count"
+FROM employees
+GROUP BY last_name
+ORDER BY "Last Name Count" DESC; 
 
 
 
