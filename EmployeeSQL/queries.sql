@@ -1,4 +1,4 @@
--- Query 1 (done)
+-- Query 1 
 SELECT 	employees.emp_no, 
 employees.last_name,
 employees.first_name,
@@ -8,7 +8,7 @@ FROM employees
 INNER JOIN salaries ON
 employees.emp_no = salaries.emp_no ;
 
--- Query 2 (I need to change the type of data for this collumn to an int for this to work)
+-- Query 2 
 
 SELECT first_name,
 last_name,
