@@ -27,9 +27,6 @@ departments.dept_no = dept_manager.dept_no
 	INNER JOIN employees ON
 	employees.emp_no = dept_manager.emp_no ;
 
-
-
-
 -- Department of each employee
 SELECT  e.emp_no,
         e.last_name,
