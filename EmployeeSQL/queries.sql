@@ -1,27 +1,26 @@
--- Query 1 
+--  Salary by employee
 SELECT 	employees.emp_no, 
-employees.last_name,
-employees.first_name,
-employees.sex,
-salaries.salary
+	employees.last_name,
+	employees.first_name,
+	employees.sex,
+	salaries.salary
 FROM employees
 INNER JOIN salaries ON
 employees.emp_no = salaries.emp_no ;
 
--- Query 2 
-
+-- Employees hired in 1986
 SELECT first_name,
-last_name,
-hire_date
+	last_name,
+	hire_date
 FROM employees
-WHERE hire_date LIKE '1986%';
+WHERE hire_date BETWEEN '1986-01-01' AND '1986-12-31';
 
--- Query 3
+-- Manager of each department
 SELECT 	departments.dept_no,
-departments.dept_name,
-dept_manager.emp_no,
-employees.last_name,
-employees.first_name
+	departments.dept_name,
+	dept_manager.emp_no,
+	employees.last_name,
+	employees.first_name
 FROM dept_manager
 INNER JOIN departments ON
 departments.dept_no = dept_manager.dept_no 
@@ -31,59 +30,54 @@ departments.dept_no = dept_manager.dept_no
 
 
 
--- Query 4
-SELECT departments.dept_name,
-dept_emp.emp_no,
-employees.last_name,
-employees.first_name
-FROM dept_emp
-INNER JOIN departments ON
-departments.dept_no = dept_emp.dept_no 
-	INNER JOIN employees ON
-	employees.emp_no = dept_emp.emp_no ;
+-- Department of each employee
+SELECT  e.emp_no,
+        e.last_name,
+        e.first_name,
+        d.dept_name
+FROM employees AS e
+    INNER JOIN dept_emp AS de
+        ON (e.emp_no = de.emp_no)
+    INNER JOIN departments AS d
+        ON (de.dept_no = d.dept_no)
+WHERE d.dept_name = 'Sales'
+ORDER BY e.emp_no;
 
--- Query 5
+-- Employees whose first name is "Hercules" and last name begins with "B"
 SELECT first_name,
-last_name,
-sex
+	last_name,
+	sex
 FROM employees
 WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 
--- Query 6
-SELECT employees.emp_no,
-employees.last_name,
-employees.first_name
-FROM employees
-WHERE emp_no IN(
-				SELECT emp_no
-				FROM dept_emp
-				WHERE dept_no IN(
-									SELECT dept_no
-									FROM departments
-									WHERE dept_name = 'Sales'
-				
-				)
-			) ;
+-- Employees in the Sales department
+SELECT  e.emp_no,
+        e.last_name,
+        e.first_name,
+        d.dept_name
+FROM employees AS e
+    INNER JOIN dept_emp AS de
+        ON (e.emp_no = de.emp_no)
+    INNER JOIN departments AS d
+        ON (de.dept_no = d.dept_no)
+WHERE d.dept_name = 'Sales'
+ORDER BY e.emp_no;
 
--- Query 7
-SELECT employees.emp_no,
-employees.last_name,
-employees.first_name,
-departments.dept_name
-FROM employees,
-departments
-WHERE emp_no IN(
-				SELECT emp_no
-				FROM dept_emp
-				WHERE dept_no IN(
-									SELECT dept_no
-									FROM departments
-									WHERE dept_name IN ('Sales','Development')
-				
-				)
-			) ;
 
--- Query 8
+-- Employees in Sales and Development departments
+SELECT  e.emp_no,
+        e.last_name,
+        e.first_name,
+        d.dept_name
+FROM employees AS e
+    INNER JOIN dept_emp AS de
+        ON (e.emp_no = de.emp_no)
+    INNER JOIN departments AS d
+        ON (de.dept_no = d.dept_no)
+WHERE d.dept_name IN ('Sales', 'Development')
+ORDER BY e.emp_no;
+
+-- The frequency of employee last names
 SELECT last_name "Last Name",
 COUNT(last_name) "Last Name Count"
 FROM employees
